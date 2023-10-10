@@ -50,25 +50,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '../store/auth'
-import { Routes } from '../enums/routes'
-
-const authModule = useAuthStore()
-const router = useRouter()
-
-const gotoHomePage = () => {
-  router.push(Routes.Home)
-}
-
-// Function called when the component is mounted
-gotoHomePage()
-
-// not authenticated? go back to login page
-
-if (!authModule.isAuthenticated) {
-  window.location.href = '/'
-}
-</script>
