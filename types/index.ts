@@ -33,6 +33,10 @@ export interface Comment {
 
 export type ConflictData = NameRequest | Corporation
 
+export interface CorporationError {
+  message: string
+}
+
 export interface Corporation {
   'incorp #': string
   directors: string[] | 'Not Available'

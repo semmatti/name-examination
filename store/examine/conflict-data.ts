@@ -4,11 +4,14 @@ import {
   type ConflictListItem,
   type Corporation,
   type NameRequest,
+  type CorporationError,
 } from '~/types'
 import { getCorporation, getNameRequest } from '~/util/namex-api'
 
 export const useConflictData = defineStore('conflict-data', () => {
-  async function getCorpConflict(corpNum: string): Promise<Corporation> {
+  async function getCorpConflict(
+    corpNum: string
+  ): Promise<Corporation | CorporationError> {
     const response = await getCorporation(corpNum)
     return response.json()
   }
@@ -23,7 +26,11 @@ export const useConflictData = defineStore('conflict-data', () => {
   ): Promise<ConflictData> {
     try {
       if (item.source === ConflictSource.Corp) {
-        return getCorpConflict(item.nrNumber)
+        const data = await getCorpConflict(item.nrNumber)
+        if ('message' in data) {
+          throw new Error(data.message)
+        }
+        return data
       } else {
         return getNamesConflict(item.nrNumber)
       }
